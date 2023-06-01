@@ -2,7 +2,10 @@
   import { onMount } from "svelte";
   import L, { icon } from "leaflet";
   import "leaflet/dist/leaflet.css";
+  import "leaflet.control.layers.tree";
+  import "leaflet.control.layers.tree/L.Control.Layers.Tree.css";
   import type { PageData } from "/Users/jtylerstahl/Documents/VSCode/Svelte/website/.svelte-kit/types/src/routes/$types";
+
 
   export let data: PageData;
   const meters = data.GPS as Object;
@@ -10,58 +13,122 @@
 
   let map: L.Map | L.LayerGroup<any>;
 
-
   onMount(async () => {
     map = L.map("map", {
       zoomControl: true,
-      maxZoom: 35,
+      maxZoom: 28,
       minZoom: 1,
     });
-    console.log(map)
+    console.log(map);
 
     map.setView([34.330395361608595, -85.2480697631836], 11);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
       map
     );
 
+    // Open Street Map Creation //
+    map.createPane("pane_OSM");
+    var layer_OSM = L.tileLayer(
+      "http://tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        pane: "pane_OSM",
+        opacity: 1.0,
+        attribution:
+          '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
+        minZoom: 1,
+        maxZoom: 28,
+        minNativeZoom: 0,
+        maxNativeZoom: 19,
+      }
+    );
+    // layer_OSM;
+    // map.addLayer(layer_OSM);
 
-    function createRouteIcons(): { [key: string]: L.Icon } {
-      const routeIcons: { [key: string]: L.Icon } = {};
-      console.log(routeIcons);
+    // Dark Open Street Map Creation //
+    map.createPane("pane_OSM_dark");
+    var layer_OSM_dark = L.tileLayer(
+      "http://tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        className: "map-tiles",
+        pane: "pane_OSM_dark",
+        opacity: 1.0,
+        minZoom: 1,
+        maxZoom: 28,
+        minNativeZoom: 0,
+        maxNativeZoom: 19,
+      }
+    );
 
-      for (let routeNumber = 10; routeNumber <= 91; routeNumber++) {
-        const iconUrl = `src/Data/markers/rt${routeNumber}.png`;
-        const icon = L.icon({
-          iconUrl,
-          iconSize: [25, 25], // Adjust the size as per your requirements
-          className: routeNumber
+    // Google Satellite Base Map Creation //
+    map.createPane("pane_GoogleSat");
+    var layer_GoogleSat = L.tileLayer(
+      "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
+      {
+        pane: "pane_GoogleSat",
+        opacity: 1.0,
+        attribution: "",
+        minZoom: 1,
+        maxZoom: 28,
+        minNativeZoom: 0,
+        maxNativeZoom: 19,
+      }
+    );
+    layer_GoogleSat;
+
+
+
+    var baseTree = {
+      label: "Base Maps",
+      children: [
+        { label: "OpenStreetMap", layer: layer_OSM },
+        { label: "Google Satellite", layer: layer_GoogleSat },
+        {
+          label: "OpenStreetMap Dark Mode",
+          layer: layer_OSM_dark,
+        },
+        /* ... */
+      ],
+    };
+
+    var options = {
+      collapseAll: "",
+      collapsed: false,
+    };
+
+    function addMarkersToMap(map: L.Map, meters) {
+      const routeLayers: { [key: string]: L.LayerGroup } = {};
+
+      meters.forEach((meter) => {
+        const { Route, X, Y } = meter;
+
+        const markerIcon = L.icon({
+          iconUrl: `src/Data/markers/rt${Route}.png`,
+          iconSize: [25, 25], // Adjust the size according to your marker images
         });
 
-        routeIcons[routeNumber.toString()] = icon;
-      }
+        const marker = L.marker([Y, X], { icon: markerIcon });
 
-      return routeIcons;
+        if (!routeLayers[Route]) {
+          routeLayers[Route] = L.layerGroup().addTo(map);
+        }
+
+        marker.addTo(routeLayers[Route]);
+      });
+
+      const treeLayerControl = L.control.layers.tree(
+        baseTree,
+        routeLayers,
+        options
+      );
+      treeLayerControl.addTo(map);
     }
 
-    const routeIcons = createRouteIcons();
-    console.log("Called routeIcons: ", routeIcons);
-    console.log("icon: ", icon)
-
-
-
-    for (let i = 10; i < meters.length; i++) {
-
-      if (meters[i].Route = routeIcons[i]) {
-
-        L.marker([meters[i].Y, meters[i].X], { icon: routeIcons[i]})
-          .addTo(map)
-          .bindPopup(meters[i].Address);
-      }
-    }
+    addMarkersToMap(map, meters);
   });
 </script>
 
-<div id="map" style="height: 800px;border-radius:0.5rem;margin-top:3rem;" />
+<div id="map" style="height:50vmax;border-radius:0.25rem;margin-top:3rem;" />
+
 
 <style>
   #map {
