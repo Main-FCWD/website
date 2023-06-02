@@ -32,9 +32,9 @@
   };
 
 
-  console.log("fullname: ", data.profiles[0].full_name);
-  console.log("uuid: ", data.session?.user.id);
-  console.log("staff data: ", data.staff);
+  // console.log("fullname: ", data.profiles[0].full_name);
+  // console.log("uuid: ", data.session?.user.id);
+  // console.log("staff data: ", data.staff);
 
 </script>
 
@@ -97,6 +97,6 @@
 >
 <nav>
   <li><small>Floyd County Water Department</small></li>
-  <li><img id="theme_switcher"></li>
+  <li><div><img id="theme_switcher"></div></li>
 </nav>
 </footer>

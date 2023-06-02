@@ -3064,7 +3064,7 @@ progress::-moz-progress-bar {
   position: relative;
 }
 [data-tooltip]:not(a, button, input) {
-  border-bottom: 1px dotted;
+  /* border-bottom: 1px dotted; */
   text-decoration: none;
   cursor: help;
 }
@@ -3357,8 +3357,7 @@ th {
 }
 
 .fa,
-.leaflet-container,
-a {
+.leaflet-container {
   color: #000000 !important;
 }
 .leaflet-control-zoom-in,
@@ -3534,5 +3533,5 @@ a {
 #theme_switcher {
   width: 30px;
   height: 30px;
-  background-color: red;
+ 
 }

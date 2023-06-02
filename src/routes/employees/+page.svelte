@@ -9,7 +9,7 @@
   const maintainDept = data.staff.filter(row => row.department === 'Maintenance');
 </script>
 
-<article>
+<article style="margin-top:5rem">
 
 <header>
     <h1 style="text-align: left;">Employee Information</h1>
