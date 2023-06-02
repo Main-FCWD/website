@@ -4,7 +4,7 @@
   import "leaflet/dist/leaflet.css";
   import "leaflet.control.layers.tree";
   import "leaflet.control.layers.tree/L.Control.Layers.Tree.css";
-  import type { PageData } from "/Users/jtylerstahl/Documents/VSCode/Svelte/website/.svelte-kit/types/src/routes/$types";
+  import type { PageData } from ".svelte-kit/types/src/routes/$types";
 
 
   export let data: PageData;
@@ -98,7 +98,7 @@
     function addMarkersToMap(map: L.Map, meters) {
       const routeLayers: { [key: string]: L.LayerGroup } = {};
 
-      meters.forEach((meter) => {
+      meters.forEach((meter: { Route: any; X: any; Y: any; }) => {
         const { Route, X, Y } = meter;
 
         const markerIcon = L.icon({
@@ -127,7 +127,7 @@
   });
 </script>
 
-<div id="map" style="height:50vmax;border-radius:0.25rem;margin-top:3rem;" />
+<div id="map" style="height:45vmax;border-radius:0.25rem;margin-top:3rem;margin-bottom:3rem;" />
 
 
 <style>

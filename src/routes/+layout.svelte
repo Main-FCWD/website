@@ -35,6 +35,7 @@
   console.log("fullname: ", data.profiles[0].full_name);
   console.log("uuid: ", data.session?.user.id);
   console.log("staff data: ", data.staff);
+
 </script>
 
 <!-- Navigation Bar -->
@@ -68,7 +69,7 @@
 {#if data.session}
   <nav
     class="container-fluid"
-    style="background: var(--code-background-color); width: 90%; border-radius: .5rem;"
+    style="background: var(--pico-muted-border-color); width: 90%; border-radius: .5rem;"
   >
     <ul>
       <li>
@@ -94,5 +95,8 @@
   class="container-fluid"
   style="padding-top: 0; padding-bottom: 1%; position: fixed; bottom: 0px"
 >
-  <small>Floyd County Water Department</small>
+<nav>
+  <li><small>Floyd County Water Department</small></li>
+  <!-- <li><a href="/" id="theme_switcher"></a></li> -->
+</nav>
 </footer>
