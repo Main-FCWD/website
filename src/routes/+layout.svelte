@@ -97,6 +97,6 @@
 >
 <nav>
   <li><small>Floyd County Water Department</small></li>
-  <!-- <li><a href="/" id="theme_switcher"></a></li> -->
+  <li><img id="theme_switcher"></li>
 </nav>
 </footer>

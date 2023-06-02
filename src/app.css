@@ -1864,7 +1864,7 @@ label:has([type="checkbox"], [type="radio"]) {
 [type="radio"]:checked:active,
 [type="radio"]:checked:focus {
   --pico-background-color: var(--pico-primary-background);
-  --pico-border-color: var(--pico-primary-border);
+  --pico-border-color: var(--pico-primary-inverse);
   background-image: var(--pico-icon-checkbox);
   background-position: center;
   background-size: 0.75em auto;
@@ -1897,7 +1897,7 @@ label:has([type="checkbox"], [type="radio"]) {
 [type="radio"]:checked,
 [type="radio"]:checked:active,
 [type="radio"]:checked:focus {
-  --pico-background-color: var(--pico-primary-inverse);
+  --pico-background-color: var(--pico-primary-background);
   border-width: 0.35em;
   background-image: none;
 }
@@ -3530,4 +3530,9 @@ a {
 
 #map > div.leaflet-control-container > div.leaflet-top.leaflet-right > div > section > div.leaflet-control-layers-base > div.leaflet-layerstree-children > div > div > span > label {
   font-size: 13px;
+}
+#theme_switcher {
+  width: 30px;
+  height: 30px;
+  background-color: red;
 }
