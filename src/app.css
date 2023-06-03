@@ -3320,7 +3320,7 @@ textarea,
 
 #map {
   background-color: #ffffff;
-  box-shadow: 0 1px 20px 5px rgb(0 0 0 / 30%);
+  box-shadow: 0 1px 20px 5px var(--pico-code-color);
 }
 th {
   text-align: left;
@@ -3531,7 +3531,7 @@ th {
   font-size: 13px;
 }
 #theme_switcher {
-  width: 30px;
-  height: 30px;
+  width: 100%;
+  height: 100%;
  
 }

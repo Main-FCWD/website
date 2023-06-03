@@ -95,7 +95,7 @@
       collapsed: false,
     };
 
-    function addMarkersToMap(map: L.Map, meters) {
+    function addMarkersToMap(map: L.Map, meters: Object) {
       const routeLayers: { [key: string]: L.LayerGroup } = {};
 
       meters.forEach((meter: { Route: any; X: any; Y: any; }) => {
@@ -242,7 +242,7 @@
   });
 </script>
 
-<div id="map" style="height:700px;border-radius:0.25rem;margin-top:3rem;margin-bottom:3rem;" />
+<div id="map" style="height:88rem;border-radius:0.75rem;margin-top:3rem;margin-bottom:3rem;" />
 
 
 <style>
