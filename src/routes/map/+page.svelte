@@ -6,10 +6,8 @@
   import "leaflet.control.layers.tree/L.Control.Layers.Tree.css";
   import type { PageData } from ".svelte-kit/types/src/routes/$types";
 
-
   export let data: PageData;
   const meters = data.GPS as Object;
-
 
   let map: L.Map | L.LayerGroup<any>;
 
@@ -75,8 +73,6 @@
     );
     layer_GoogleSat;
 
-
-
     var baseTree = {
       label: "Base Maps",
       children: [
@@ -95,26 +91,57 @@
       collapsed: false,
     };
 
+    map.createPane("pane_FloydBorder");
+    // Load and display your JSON file using Leaflet.js
+    fetch("src/Data/FloydBorder.json")
+      .then((response) => response.json())
+      .then((data) => {
+        L.geoJSON(data, {
+          style: {
+            pane: "pane_FloydBorder",
+            opacity: 1,
+            color: "rgba(188,35,35,1.0)",
+            dashArray: "",
+            lineCap: "square",
+            lineJoin: "bevel",
+            weight: 4.0,
+            fillOpacity: 0,
+            interactive: false,
+          },
+        }).addTo(map);
+      });
+
     function addMarkersToMap(map: L.Map, meters: Object) {
       const routeLayers: { [key: string]: L.LayerGroup } = {};
+      const conditionLayers: { [key: string]: L.LayerGroup } = {};
 
-      meters.forEach((meter: { Route: any; X: any; Y: any; }) => {
-        const { Route, X, Y } = meter;
+      meters.forEach((meter: { Route: any; X: any; Y: any }) => {
+        const { Route, Condition, X, Y } = meter;
 
         const markerIcon = L.icon({
           iconUrl: `src/Data/markers/rt${Route}.png`,
           iconSize: [25, 25], // Adjust the size according to your marker images
         });
 
+        const conditionMarkerIcon = L.icon({
+          iconUrl: `src/Data/markers/${Condition}_condition.png`,
+          iconSize: [13, 13], // Adjust the size according to your marker images
+        });
+
         const marker = L.marker([Y, X], { icon: markerIcon });
+        const conditionMarker = L.marker([Y, X], { icon: conditionMarkerIcon });
 
         if (!routeLayers[Route]) {
-          routeLayers[Route] = L.layerGroup()
+          routeLayers[Route] = L.layerGroup();
+        }
+        if (!conditionLayers[Condition]) {
+          conditionLayers[Condition] = L.layerGroup();
         }
         marker.addTo(routeLayers[Route]);
+        conditionMarker.addTo(conditionLayers[Condition]);
       });
 
-      console.log(routeLayers)
+      console.log(routeLayers);
 
       var mapRoutes: object = {
         label: "Meters",
@@ -219,14 +246,14 @@
           {
             label: "Problems",
             selectAllCheckbox: true,
-            collapsed:true,
+            collapsed: true,
             children: [
-            { label: "Dead Head", layer: "" },
-            { label: "Error Code", layer: "" },
-            { label: "Manual Read", layer: "" },
-            { label: "Crew", layer: "" },
-            ]
-          }
+              { label: "Dead Head", layer: "" },
+              { label: "Error Code", layer: "" },
+              { label: "Manual Read", layer: "" },
+              { label: "Crew", layer: "" },
+            ],
+          },
         ],
       };
 
@@ -238,16 +265,17 @@
       treeLayerControl.addTo(map);
     }
 
-     addMarkersToMap(map, meters);
+    addMarkersToMap(map, meters);
   });
 </script>
 
-<div id="map" style="height:88rem;border-radius:0.75rem;margin-top:3rem;margin-bottom:3rem;" />
-
+<div
+  id="map"
+  style="height:37rem;border-radius:0.75rem;margin-top:3rem;margin-bottom:3rem;"
+/>
 
 <style>
   #map {
     width: 100%;
   }
 </style>
-
